@@ -3,267 +3,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Adonis Protocol Tracker & Scheduler</title>
+  <title>Adonis Protocol 2.0+</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f7fa; margin: 0; }
-    header { background-color: #002244; color: white; padding: 16px; text-align: center; font-size: 1.3rem; }
-    nav { display: flex; justify-content: space-around; background-color: #004080; }
-    nav button {
-      flex: 1; padding: 14px; font-size: 16px; background: none; border: none;
-      color: white; cursor: pointer; font-weight: bold;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fa;
+      color: #1f2937;
     }
-    .container { padding: 16px; }
-    .section { display: none; background: white; padding: 16px; margin-bottom: 20px;
-               border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .visible { display: block; }
-    h2 { font-size: 1.2rem; margin-bottom: 12px; }
-    .entry label { display: block; font-weight: bold; margin-top: 10px; }
-    .entry input, .entry select, .entry textarea {
-      width: 100%; padding: 8px; font-size: 1rem;
-      border: 1px solid #ccc; border-radius: 6px;
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 16px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    .log-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    .log-table th, .log-table td {
-      padding: 8px; border: 1px solid #ddd; text-align: center;
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
     }
-    canvas { max-width: 100%; margin-top: 20px; }
-    .schedule-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    .schedule-table th, .schedule-table td {
-      border: 1px solid #ccc; padding: 6px; text-align: left;
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 20px;
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    canvas {
+      max-width: 100%;
+      margin-top: 16px;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
   </style>
 </head>
 <body>
-<header>Adonis Protocol Tracker & Scheduler</header>
-<nav>
-  <button onclick="showSection('today')">Today</button>
-  <button onclick="showSection('schedule')">Schedule</button>
-  <button onclick="showSection('history')">History</button>
-  <button onclick="showSection('analytics')">Analytics</button>
-  <button onclick="overview()">Protocol</button>
-<button onclick="downloadCSV()">Export</button>
-</nav>
-
-<!-- Add to HTML body after nav -->
-
-<div id="overview" class="section" style="display:none;">
-  <h2>Protocol Overview</h2>
-
-  <h3>Transformation Rules</h3>
-  <ul>
-    <li>The protocol is non-negotiable. Follow the structure daily.</li>
-    <li>Eliminate distractions and dopamine traps (no porn, excessive scrolling).</li>
-    <li>Your body is a temple. Fuel it only with purpose and intent.</li>
-    <li>Discipline equals freedom. Train your mind by honoring your word.</li>
-    <li>Each day is a brick in your legacy. Build with intention.</li>
-    <li>Sleep is sacred: 7+ hrs, blackout room, no screens after 9PM.</li>
-    <li>No excuses. Your future self is watching. Earn his respect.</li>
-  </ul>
-
-  <h3>Motivational Mandates</h3>
-  <ul>
-    <li>You are not average. You were never meant to be.</li>
-    <li>This is about becoming undeniable — in body, mind, and presence.</li>
-    <li>Weakness will be replaced by will. Hesitation by certainty.</li>
-    <li>Every drop of sweat is a deposit into your greatness.</li>
-    <li>Show the world what self-mastery looks like.</li>
-  </ul>
-
-  <h3>Supplement Protocol</h3>
-  <p><strong>Core Daily Stack:</strong></p>
-  <ul>
-    <li>Vitamin D3: 3,000–5,000 IU (AM)</li>
-    <li>Zinc: 25–30mg (with food)</li>
-    <li>Magnesium Glycinate: 200–400mg (before bed)</li>
-    <li>Omega-3s: 2–3g EPA/DHA</li>
-    <li>Electrolytes: Daily via salt, potassium, mineral water</li>
-    <li>Ashwagandha (KSM-66): 600mg nightly</li>
-  </ul>
-  <p><strong>Optional Boosters:</strong></p>
-  <ul>
-    <li>Creatine Monohydrate: 5g/day</li>
-    <li>Tongkat Ali: 200–400mg/day</li>
-    <li>L-Citrulline: 6g pre-workout</li>
-    <li>B-Complex: 1 cap daily</li>
-  </ul>
-</div>
-
-<!-- Add to nav -->
-<button onclick="showSection('overview')">Protocol</button>
-
-<!-- Extend showSection() script logic -->
-
-
+<header>Adonis Protocol 2.0+</header>
 <div class="container">
-  <div id="today" class="section visible">
-    <h2>Daily Entry - Phase: <span id="phaseLabelToday"></span></h2>
-    <div class="entry"><label>Date</label><input type="date" id="dateInput"></div>
-    <div class="entry"><label>Weight (kg)</label><input type="number" id="weightInput"></div>
-    <div class="entry"><label>Body Fat (%)</label><input type="number" id="bodyFatInput"></div>
-    <div class="entry"><label>Sleep (hrs)</label><input type="number" id="sleepInput"></div>
-    <div class="entry"><label>Mood (1-10)</label><input type="number" id="moodInput"></div>
-    <div class="entry"><label>Energy (1-10)</label><input type="number" id="energyInput"></div>
-    <div class="entry"><label>Notes</label><textarea rows="3" id="notesInput"></textarea></div>
-    
-<div class="entry"><label>Libido (Y/N)</label><select id="libidoInput"><option>Yes</option><option>No</option></select></div>
-<div class="entry"><label>Focus (1–10)</label><input type="number" id="focusInput" min="1" max="10"></div>
-<div class="entry"><label>Cravings (Y/N)</label><select id="cravingsInput"><option>Yes</option><option>No</option></select></div>
-<div class="entry"><label>Smoked/Vaped (Y/N)</label><select id="smokeInput"><option>Yes</option><option>No</option></select></div>
-<div class="entry"><label>Masturbated (Y/N)</label><select id="masturbationInput"><option>Yes</option><option>No</option></select></div>
-<div class="entry"><label>Followed Plan (Y/N)</label><select id="complianceInput"><option>Yes</option><option>No</option></select></div>
-
-<button onclick="saveEntry()">Save Day</button>
+  <div class="card">
+    <div class="nav-buttons">
+      <button onclick="changeDay(-1)">← Previous</button>
+      <div>
+        <strong id="dayDisplay"></strong> | <span id="dateDisplay"></span>
+      </div>
+      <button onclick="changeDay(1)">Next →</button>
+    </div>
+    <h2>Tracker + Schedule</h2>
+    <div><strong>Phase:</strong> <span id="phaseDisplay"></span></div>
+    <div id="scheduleBox" style="margin: 10px 0; font-style: italic;"></div>
+    <label>Weight (kg)</label><input id="weight">
+    <label>Body Fat (%)</label><input id="bodyFat">
+    <label>Sleep (hrs)</label><input id="sleep">
+    <label>Mood (1–10)</label><input id="mood">
+    <label>Energy (1–10)</label><input id="energy">
+    <label>Focus (1–10)</label><input id="focus">
+    <label>Libido</label><select id="libido"><option>Yes</option><option>No</option></select>
+    <label>Cravings</label><select id="cravings"><option>No</option><option>Yes</option></select>
+    <label>Smoked/Vaped</label><select id="smoked"><option>No</option><option>Yes</option></select>
+    <label>Masturbated</label><select id="masturbated"><option>No</option><option>Yes</option></select>
+    <label>Followed Plan</label><select id="compliance"><option>Yes</option><option>No</option></select>
+    <label>Notes</label><textarea id="notes" rows="3"></textarea>
+    <button onclick="saveEntry()">Save Entry</button>
   </div>
 
-  <div id="schedule" class="section">
-    <h2>Daily Schedule by Phase</h2>
-    <p><strong>Current Phase:</strong> <span id="phaseLabelSchedule"></span></p>
-    <p><strong>Goals:</strong> <span id="phaseGoals"></span></p>
-    <table class="schedule-table">
-      <thead><tr><th>Time</th><th>Activity</th></tr></thead>
-      <tbody id="dailyScheduleBody"></tbody>
-    </table>
-  </div>
-
-  <div id="history" class="section">
-    <h2>History Log</h2>
-    <table class="log-table" id="logTable">
-      <thead>
-        <tr>
-  <th>Date</th><th>Day</th><th>Phase</th><th>Weight</th><th>Body Fat</th><th>Sleep</th><th>Mood</th>
-  <th>Energy</th><th>Focus</th><th>Libido</th><th>Cravings</th><th>Smoked</th><th>Masturbated</th><th>Compliance</th><th>Notes</th>
-</tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div id="analytics" class="section">
+  <div class="card">
     <h2>Analytics</h2>
     <canvas id="weightChart"></canvas>
-    <canvas id="bodyFatChart"></canvas>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const entries = JSON.parse(localStorage.getItem("adonisEntries") || "[]");
+let selectedDate = new Date();
+const logs = JSON.parse(localStorage.getItem("adonisLogs") || "[]");
 
-function getPhase(dateStr) {
-  const startDate = new Date(localStorage.getItem("adonisStart") || new Date());
-  const current = new Date(dateStr);
-  const days = Math.floor((current - startDate) / (1000 * 60 * 60 * 24));
-  if (days < 14) return "Reset & Prime";
-  if (days < 28) return "Build & Harden";
-  if (days < 42) return "Sculpt & Optimize";
-  return "Lock & Maintain";
+function formatDate(d) {
+  return d.toISOString().split('T')[0];
 }
 
-const phaseGoals = {
-  "Reset & Prime": "Drop water weight, reset cravings (10–12% BF)",
-  "Build & Harden": "Increase strength, keep BF ~12–13%",
-  "Sculpt & Optimize": "Cut to 9–10% BF, maintain lean mass",
-  "Lock & Maintain": "Sustain 10–12% BF, performance, and energy"
-};
+function updateHeader() {
+  const dateStr = formatDate(selectedDate);
+  const weekday = selectedDate.toLocaleDateString('en-GB', { weekday: 'long' });
+  document.getElementById("dateDisplay").textContent = dateStr;
+  document.getElementById("dayDisplay").textContent = weekday;
 
-const phaseSchedules = {
-  "Reset & Prime": [["06:00", "Wake + Water"], ["06:30", "Meal 1"], ["08:00", "Work (Hydration Only)"], ["18:00", "Workout: Circuits"], ["19:00", "Meal 2"], ["21:00", "Wind Down"]],
-  "Build & Harden": [["06:00", "Wake + Coffee"], ["06:30", "Meal 1"], ["08:00", "Work (Hydration Only)"], ["18:00", "Workout: Strength Split"], ["19:00", "Meal 2"], ["21:00", "Protein + Notes"]],
-  "Sculpt & Optimize": [["06:00", "Wake + Optional Fasted Cardio"], ["06:30", "Meal 1"], ["08:00", "Work"], ["18:00", "Workout: High-Rep Burn"], ["19:00", "Meal 2"], ["21:00", "Sleep Ritual"]],
-  "Lock & Maintain": [["06:00", "Wake + Meditation"], ["06:30", "Meal 1"], ["08:00", "Work"], ["18:00", "Workout: Hybrid Routine"], ["19:00", "Meal 2"], ["21:00", "Plan + Reflect"]]
-};
+  const startDate = new Date(localStorage.getItem("adonisStart") || formatDate(new Date()));
+  localStorage.setItem("adonisStart", formatDate(startDate));
+  const dayNum = Math.floor((selectedDate - startDate) / (1000 * 60 * 60 * 24));
+  const phase = dayNum < 14 ? "Reset & Prime" : dayNum < 28 ? "Build & Harden" : dayNum < 42 ? "Sculpt & Optimize" : "Lock & Maintain";
+  document.getElementById("phaseDisplay").textContent = phase;
 
-function saveEntry() {
-  const date = document.getElementById("dateInput").value;
-  const day = new Date(date).toLocaleDateString("en-GB", { weekday: "long" });
-  const phase = getPhase(date);
-  const entry = {
-    date, day, phase,
-    weight: document.getElementById("weightInput").value,
-    bodyFat: document.getElementById("bodyFatInput").value,
-    sleep: document.getElementById("sleepInput").value,
-    mood: document.getElementById("moodInput").value,
-    energy: document.getElementById("energyInput").value,
-    notes: document.getElementById("notesInput").value,
-
-    libido: document.getElementById("libidoInput").value,
-    focus: document.getElementById("focusInput").value,
-    cravings: document.getElementById("cravingsInput").value,
-    smoked: document.getElementById("smokeInput").value,
-    masturbated: document.getElementById("masturbationInput").value,
-    compliance: document.getElementById("complianceInput").value,
-
+  const schedule = {
+    "Reset & Prime": "Hydration, protein-focused meals, bodyweight training.",
+    "Build & Harden": "Caloric increase, strength training, mental focus.",
+    "Sculpt & Optimize": "Low carb, fat burn circuits, peak definition.",
+    "Lock & Maintain": "Sustain energy, hybrid routines, balance and reflect."
   };
-  entries.push(entry);
-  localStorage.setItem("adonisEntries", JSON.stringify(entries));
-  alert("Entry saved!");
-  updateLog();
+  document.getElementById("scheduleBox").textContent = schedule[phase];
+
+  const log = logs.find(e => e.date === dateStr) || {};
+  ["weight","bodyFat","sleep","mood","energy","focus","libido","cravings","smoked","masturbated","compliance","notes"].forEach(id => {
+    if (document.getElementById(id).tagName === "SELECT") {
+      document.getElementById(id).value = log[id] || "Yes";
+    } else {
+      document.getElementById(id).value = log[id] || "";
+    }
+  });
+
   updateCharts();
 }
 
-function updateLog() {
-  const tbody = document.getElementById("logTable").querySelector("tbody");
-  tbody.innerHTML = "";
-  entries.forEach(e => {
-    const row = `<tr><td>${e.date}</td><td>${e.day}</td><td>${e.phase}</td>
-                 <td>${e.weight}</td><td>${e.bodyFat}</td><td>${e.sleep}</td>
-                 <td>${e.mood}</td><td>${e.energy}</td><td>${e.notes}</td></tr>`;
-    tbody.innerHTML += row;
-  });
+function saveEntry() {
+  const dateStr = formatDate(selectedDate);
+  const entry = {
+    date: dateStr,
+    weight: document.getElementById("weight").value,
+    bodyFat: document.getElementById("bodyFat").value,
+    sleep: document.getElementById("sleep").value,
+    mood: document.getElementById("mood").value,
+    energy: document.getElementById("energy").value,
+    focus: document.getElementById("focus").value,
+    libido: document.getElementById("libido").value,
+    cravings: document.getElementById("cravings").value,
+    smoked: document.getElementById("smoked").value,
+    masturbated: document.getElementById("masturbated").value,
+    compliance: document.getElementById("compliance").value,
+    notes: document.getElementById("notes").value
+  };
+  const idx = logs.findIndex(e => e.date === dateStr);
+  if (idx >= 0) logs[idx] = entry;
+  else logs.push(entry);
+  localStorage.setItem("adonisLogs", JSON.stringify(logs));
+  alert("Entry saved!");
+  updateCharts();
+}
+
+function changeDay(offset) {
+  selectedDate.setDate(selectedDate.getDate() + offset);
+  updateHeader();
 }
 
 function updateCharts() {
-  const dates = entries.map(e => e.date);
-  const weights = entries.map(e => e.weight);
-  const fats = entries.map(e => e.bodyFat);
-
-  new Chart(document.getElementById("weightChart").getContext("2d"), {
+  const ctx = document.getElementById("weightChart").getContext("2d");
+  const labels = logs.map(e => e.date);
+  const data = logs.map(e => +e.weight);
+  if (window.weightChart) window.weightChart.destroy();
+  window.weightChart = new Chart(ctx, {
     type: "line",
-    data: { labels: dates, datasets: [{ label: "Weight", data: weights, borderColor: "blue", fill: false }] }
-  });
-
-  new Chart(document.getElementById("bodyFatChart").getContext("2d"), {
-    type: "line",
-    data: { labels: dates, datasets: [{ label: "Body Fat %", data: fats, borderColor: "red", fill: false }] }
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Weight (kg)",
+        data: data,
+        borderColor: "#3b82f6",
+        fill: false
+      }]
+    }
   });
 }
 
-function overview() { showSection("overview"); }
-function showSection(id) {
-  document.querySelectorAll(".section").forEach(el => el.classList.remove("visible"));
-  document.getElementById(id).classList.add("visible");
-  if (id === "history") updateLog();
-  if (id === "analytics") updateCharts();
-  if (id === "schedule") {
-    const today = new Date().toISOString().split("T")[0];
-    const phase = getPhase(today);
-    document.getElementById("phaseLabelSchedule").innerText = phase;
-    document.getElementById("phaseGoals").innerText = phaseGoals[phase];
-    const rows = phaseSchedules[phase].map(([time, act]) => `<tr><td>${time}</td><td>${act}</td></tr>`).join("");
-    document.getElementById("dailyScheduleBody").innerHTML = rows;
-  }
-}
-
-function downloadCSV() {
-  let csv = "Date,Day,Phase,Weight,Body Fat,Sleep,Mood,Energy,Focus,Libido,Cravings,Smoked,Masturbated,Compliance,Notes\n";
-  entries.forEach(e => {
-    csv += `${e.date},${e.day},${e.phase},${e.weight},${e.bodyFat},${e.sleep},${e.mood},${e.energy},${e.focus},${e.libido},${e.cravings},${e.smoked},${e.masturbated},${e.compliance},"${e.notes}"\n`;
-  });
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "adonis_log.csv";
-  a.click();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("dateInput").value = today;
-  if (!localStorage.getItem("adonisStart")) localStorage.setItem("adonisStart", today);
-  document.getElementById("phaseLabelToday").innerText = getPhase(today);
-});
+updateHeader();
 </script>
 </body>
 </html>
