@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adonis Protocol Engine - Complete</title>
+  <title>Adonis Protocol Engine - Complete System</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; color: #1f2937; }
@@ -16,83 +16,168 @@
     input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
     button { margin-top: 1rem; background: #10b981; color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; font-size: 1rem; cursor: pointer; }
     canvas { margin-top: 1rem; max-width: 100%; }
+    .tabs { display: flex; gap: 1rem; }
+    .tab { cursor: pointer; padding: 0.6rem 1.2rem; background-color: #e5e7eb; border-radius: 8px; }
+    .active-tab { background-color: #10b981; color: white; }
   </style>
 </head>
 <body>
 <header>Adonis Protocol Engine - Complete System</header>
 <div class="container">
+  <!-- Date & Phase Info -->
   <div class="card">
-    <h2>Create Your Protocol</h2>
-    <label>Protocol Name</label><input id="protocolName">
-    <label>Target Body Fat (%)</label><input id="targetBF" type="number">
-    <label>Target Weight (kg)</label><input id="targetWeight" type="number">
-    <label>Eating Style</label><select id="eatingStyle">
-      <option value="Keto">Keto</option>
-      <option value="Low Carb">Low Carb</option>
-      <option value="Moderate Carb">Moderate Carb</option>
-      <option value="Calorie Surplus">Calorie Surplus</option>
-    </select>
-    <label>Start Date</label><input id="protocolStart" type="date">
-    <label>Duration (days)</label><input id="protocolDuration" type="number">
-    <button onclick="saveProtocol()">Save Protocol</button>
+    <h2>Current Date and Phase</h2>
+    <p id="currentDate"></p>
+    <p id="currentPhase"></p>
   </div>
 
-  <div class="card protocol-list">
-    <h2>Saved Protocols</h2>
-    <select id="protocolSelect" onchange="loadProtocol()">
+  <!-- Tab Navigation -->
+  <div class="tabs">
+    <div class="tab active-tab" onclick="showTab('schedule')">Schedule</div>
+    <div class="tab" onclick="showTab('metrics')">Track Metrics</div>
+    <div class="tab" onclick="showTab('analytics')">Analytics</div>
+  </div>
+
+  <!-- Schedule Tab -->
+  <div id="scheduleTab" class="tab-content">
+    <h2>Daily Schedule</h2>
+    <label for="work">Work Time</label>
+    <input type="time" id="workStart"> - <input type="time" id="workEnd">
+    <label for="meal1">Meal 1 (Time)</label><input type="time" id="meal1Time">
+    <label for="workout">Workout Time</label><input type="time" id="workoutTime">
+    <button onclick="saveSchedule()">Save Schedule</button>
+  </div>
+
+  <!-- Metrics Tab -->
+  <div id="metricsTab" class="tab-content" style="display:none;">
+    <h2>Track Metrics</h2>
+    <label for="weight">Weight (kg)</label><input id="weight" type="number">
+    <label for="bodyFat">Body Fat (%)</label><input id="bodyFat" type="number">
+    <label for="mood">Mood (1-10)</label><input id="mood" type="number">
+    <label for="energy">Energy (1-10)</label><input id="energy" type="number">
+    <label for="sleep">Sleep (hours)</label><input id="sleep" type="number">
+    <button onclick="saveMetrics()">Save Metrics</button>
+  </div>
+
+  <!-- Analytics Tab -->
+  <div id="analyticsTab" class="tab-content" style="display:none;">
+    <h2>Progress Analytics</h2>
+    <canvas id="weightChart"></canvas>
+    <canvas id="bodyFatChart"></canvas>
+  </div>
+
+  <!-- Protocol Creation -->
+  <div class="card">
+    <h2>Create New Protocol</h2>
+    <label>Protocol Name</label><input id="protocolName">
+    <label>Start Date</label><input id="protocolStartDate" type="date">
+    <label>Duration (days)</label><input id="protocolDuration" type="number">
+    <button onclick="createProtocol()">Save Protocol</button>
+  </div>
+
+  <!-- Protocol List -->
+  <div class="card">
+    <h2>Your Saved Protocols</h2>
+    <select id="protocolSelect" onchange="loadProtocolDetails()">
       <option disabled selected>Select a protocol...</option>
     </select>
     <div id="protocolDetails"></div>
   </div>
 
-  <div class="card calendar-view">
-    <h2>Calendar & Phase Assignment</h2>
-    <label>Select Date to View</label>
-    <input type="date" id="calendarDate" onchange="viewDayPlan()">
-    <div id="calendarOutput"></div>
-  </div>
-
-  <div class="card">
-    <h2>Track Your Day</h2>
-    <label>Date</label><input type="date" id="entryDate">
-    <label>Weight (kg)</label><input id="weight">
-    <label>Body Fat (%)</label><input id="bodyFat">
-    <label>Sleep (hrs)</label><input id="sleep">
-    <label>Mood (1–10)</label><input id="mood">
-    <label>Energy (1–10)</label><input id="energy">
-    <label>Focus (1–10)</label><input id="focus">
-    <label>Compliance</label><select id="compliance"><option>Yes</option><option>No</option></select>
-    <label>Notes</label><textarea id="notes" rows="3"></textarea>
-    <button onclick="saveLog()">Save Entry</button>
-  </div>
-
-  <div class="card">
-    <h2>Analytics</h2>
-    <canvas id="weightChart"></canvas>
-    <canvas id="bodyFatChart"></canvas>
-  </div>
 </div>
 
 <script>
 let protocols = JSON.parse(localStorage.getItem("adonisProtocols") || "[]");
 let logs = JSON.parse(localStorage.getItem("adonisLogs") || "[]");
+const currentDate = new Date();
 
 function formatDate(date) {
   return date.toISOString().split("T")[0];
 }
 
-function saveProtocol() {
+function updateCurrentDateAndPhase() {
+  const dateStr = formatDate(currentDate);
+  document.getElementById("currentDate").textContent = "Current Date: " + dateStr;
+  let currentPhase = "Unknown";
+  const dayNum = Math.floor((currentDate - new Date(localStorage.getItem("adonisStart"))) / (1000 * 60 * 60 * 24));
+  if (dayNum < 14) currentPhase = "Reset & Prime";
+  else if (dayNum < 28) currentPhase = "Build & Harden";
+  else if (dayNum < 42) currentPhase = "Sculpt & Optimize";
+  else currentPhase = "Lock & Maintain";
+  document.getElementById("currentPhase").textContent = "Phase: " + currentPhase;
+}
+
+function showTab(tabName) {
+  const tabs = document.querySelectorAll(".tab-content");
+  tabs.forEach(tab => tab.style.display = "none");
+  const activeTab = document.getElementById(tabName + "Tab");
+  activeTab.style.display = "block";
+
+  const tabButtons = document.querySelectorAll(".tab");
+  tabButtons.forEach(button => button.classList.remove("active-tab"));
+  document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add("active-tab");
+}
+
+function saveSchedule() {
+  const schedule = {
+    workStart: document.getElementById("workStart").value,
+    workEnd: document.getElementById("workEnd").value,
+    meal1Time: document.getElementById("meal1Time").value,
+    workoutTime: document.getElementById("workoutTime").value
+  };
+  localStorage.setItem("adonisSchedule", JSON.stringify(schedule));
+  alert("Schedule saved!");
+}
+
+function saveMetrics() {
+  const metrics = {
+    date: formatDate(currentDate),
+    weight: document.getElementById("weight").value,
+    bodyFat: document.getElementById("bodyFat").value,
+    mood: document.getElementById("mood").value,
+    energy: document.getElementById("energy").value,
+    sleep: document.getElementById("sleep").value
+  };
+  logs.push(metrics);
+  localStorage.setItem("adonisLogs", JSON.stringify(logs));
+  alert("Metrics saved!");
+  renderCharts();
+}
+
+function renderCharts() {
+  const labels = logs.map(log => log.date);
+  const weights = logs.map(log => +log.weight);
+  const bodyFatData = logs.map(log => +log.bodyFat);
+
+  if (window.weightChart) window.weightChart.destroy();
+  if (window.bodyFatChart) window.bodyFatChart.destroy();
+
+  window.weightChart = new Chart(document.getElementById("weightChart"), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: "Weight (kg)", data: weights, borderColor: "blue", fill: false }]
+    }
+  });
+
+  window.bodyFatChart = new Chart(document.getElementById("bodyFatChart"), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: "Body Fat %", data: bodyFatData, borderColor: "red", fill: false }]
+    }
+  });
+}
+
+function createProtocol() {
   const protocol = {
     name: document.getElementById("protocolName").value,
-    targetBF: document.getElementById("targetBF").value,
-    targetWeight: document.getElementById("targetWeight").value,
-    eatingStyle: document.getElementById("eatingStyle").value,
-    startDate: document.getElementById("protocolStart").value,
-    duration: parseInt(document.getElementById("protocolDuration").value)
+    startDate: document.getElementById("protocolStartDate").value,
+    duration: parseInt(document.getElementById("protocolDuration").value),
   };
   protocols.push(protocol);
   localStorage.setItem("adonisProtocols", JSON.stringify(protocols));
-  alert("Protocol saved.");
+  alert("Protocol saved!");
   populateProtocols();
 }
 
@@ -107,122 +192,19 @@ function populateProtocols() {
   });
 }
 
-function loadProtocol() {
+function loadProtocolDetails() {
   const idx = document.getElementById("protocolSelect").value;
-  const p = protocols[idx];
+  const protocol = protocols[idx];
   document.getElementById("protocolDetails").innerHTML = `
-    <p><strong>Name:</strong> ${p.name}</p>
-    <p><strong>Target BF:</strong> ${p.targetBF}%</p>
-    <p><strong>Target Weight:</strong> ${p.targetWeight} kg</p>
-    <p><strong>Eating Style:</strong> ${p.eatingStyle}</p>
-    <p><strong>Start:</strong> ${p.startDate}</p>
-    <p><strong>Duration:</strong> ${p.duration} days</p>
+    <p><strong>Name:</strong> ${protocol.name}</p>
+    <p><strong>Start Date:</strong> ${protocol.startDate}</p>
+    <p><strong>Duration:</strong> ${protocol.duration} days</p>
   `;
 }
 
-function viewDayPlan() {
-  const dateStr = document.getElementById("calendarDate").value;
-  let selectedProtocol = null;
-  for (let p of protocols) {
-    const start = new Date(p.startDate);
-    const end = new Date(start);
-    end.setDate(start.getDate() + p.duration);
-    const d = new Date(dateStr);
-    if (d >= start && d <= end) {
-      selectedProtocol = p;
-      break;
-    }
-  }
-  const output = document.getElementById("calendarOutput");
-  if (!selectedProtocol) {
-    output.innerHTML = "<p>No protocol active on this date.</p>";
-    return;
-  }
-
-  const start = new Date(selectedProtocol.startDate);
-  const current = new Date(dateStr);
-  const daysIn = Math.floor((current - start) / (1000 * 60 * 60 * 24));
-  const phase = daysIn < 14 ? "Reset & Prime" : daysIn < 28 ? "Build & Harden" : daysIn < 42 ? "Sculpt & Optimize" : "Lock & Maintain";
-
-  output.innerHTML = `
-    <p><strong>Protocol:</strong> ${selectedProtocol.name}</p>
-    <p><strong>Phase:</strong> ${phase}</p>
-    <p><strong>Meals:</strong> ${getMeals(phase)}</p>
-    <p><strong>Workout:</strong> ${getWorkout(phase)}</p>
-    <p><strong>Supplements:</strong> ${getSupplements(phase)}</p>
-  `;
-}
-
-function getMeals(phase) {
-  const meals = {
-    "Reset & Prime": "Eggs + chicken for breakfast, fish + greens for dinner.",
-    "Build & Harden": "Beef + eggs AM, chicken thighs + rice PM.",
-    "Sculpt & Optimize": "Lean meat, broccoli, no carbs, 2 meals.",
-    "Lock & Maintain": "Flexible protein + veggies, 2-3 meals clean."
-  };
-  return meals[phase];
-}
-
-function getWorkout(phase) {
-  const workouts = {
-    "Reset & Prime": "Bodyweight circuits + running on the spot.",
-    "Build & Harden": "Dumbbell strength split, 4x/week.",
-    "Sculpt & Optimize": "High rep dumbbell burnouts + daily cardio.",
-    "Lock & Maintain": "Hybrid strength/cardio 3x/week."
-  };
-  return workouts[phase];
-}
-
-function getSupplements(phase) {
-  const supps = {
-    "Reset & Prime": "Electrolytes, D3, magnesium.",
-    "Build & Harden": "Creatine, Omega-3, zinc, protein.",
-    "Sculpt & Optimize": "Ashwagandha, green tea, zinc, magnesium.",
-    "Lock & Maintain": "D3, Omega-3, magnesium, balance stack."
-  };
-  return supps[phase];
-}
-
-function saveLog() {
-  const log = {
-    date: formatDate(new Date()),
-    weight: document.getElementById("weight").value,
-    bodyFat: document.getElementById("bodyFat").value,
-    sleep: document.getElementById("sleep").value,
-    mood: document.getElementById("mood").value,
-    energy: document.getElementById("energy").value,
-    focus: document.getElementById("focus").value,
-    compliance: document.getElementById("compliance").value,
-    notes: document.getElementById("notes").value
-  };
-  const idx = logs.findIndex(e => e.date === log.date);
-  if (idx >= 0) logs[idx] = log;
-  else logs.push(log);
-  localStorage.setItem("adonisLogs", JSON.stringify(logs));
-  alert("Entry saved!");
-  renderCharts();
-}
-
-function renderCharts() {
-  const labels = logs.map(e => e.date);
-  const weights = logs.map(e => +e.weight);
-  const bfp = logs.map(e => +e.bodyFat);
-
-  if (window.weightChart) window.weightChart.destroy();
-  if (window.bodyFatChart) window.bodyFatChart.destroy();
-
-  window.weightChart = new Chart(document.getElementById("weightChart"), {
-    type: 'line',
-    data: { labels, datasets: [{ label: "Weight", data: weights, borderColor: "blue", fill: false }] }
-  });
-
-  window.bodyFatChart = new Chart(document.getElementById("bodyFatChart"), {
-    type: 'line',
-    data: { labels, datasets: [{ label: "Body Fat %", data: bfp, borderColor: "red", fill: false }] }
-  });
-}
-
-renderCharts();
+populateProtocols();
+updateCurrentDateAndPhase();
+showTab('schedule');
 </script>
 </body>
 </html>
