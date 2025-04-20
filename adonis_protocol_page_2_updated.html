@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adonis Protocol - Personalized Plan</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Global Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/page-1.html">Home</a></li>
+        <li><a href="/page-2.html">Personal Plan</a></li>
+        <li><a href="/page-3.html">Progress Tracking</a></li>
+        <li><a href="/page-4.html">Analytics</a></li>
+        <li><a href="/page-5.html">Protocol Planner</a></li>
+        <li><a href="/page-6.html">Final Overview</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Your Personalized Plan</h2>
+      <p><strong>Weight Goal:</strong> <span id="weightGoalText"></span> kg</p>
+      <p><strong>Body Fat Goal:</strong> <span id="bodyFatGoalText"></span>%</p>
+      <p><strong>Timeframe:</strong> <span id="timeframeText"></span> months</p>
+      
+      <h3>Recommended Diet: <span id="dietText"></span></h3>
+      <p><strong>Daily Caloric Intake:</strong> <span id="caloriesText"></span> kcal</p>
+      <p><strong>Macronutrient Breakdown:</strong></p>
+      <ul>
+        <li>Protein: <span id="proteinText"></span> g</li>
+        <li>Fat: <span id="fatText"></span> g</li>
+        <li>Carbs: <span id="carbsText"></span> g</li>
+      </ul>
+      
+      <h4>Sample Meals:</h4>
+      <ul>
+        <li>Breakfast: <span id="meal1Text"></span></li>
+        <li>Lunch: <span id="meal2Text"></span></li>
+        <li>Dinner: <span id="meal3Text"></span></li>
+      </ul>
+      
+      <h3>Workout Plan</h3>
+      <p><strong>Focus:</strong> <span id="exerciseFocusText"></span></p>
+      <h4>Strength Training:</h4>
+      <ul>
+        <li>Upper Body: Dumbbell presses, rows, shoulder work</li>
+        <li>Lower Body: Squats, lunges, deadlifts</li>
+        <li>Core: Planks, crunches, leg raises</li>
+      </ul>
+      
+      <h4>Cardio:</h4>
+      <ul>
+        <li>HIIT (20 minutes)</li>
+        <li>Running (30 minutes) or cycling</li>
+      </ul>
+      
+      <h4>Frequency:</h4>
+      <ul>
+        <li>Strength Training: 4x/week</li>
+        <li>Cardio: 2x/week</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Your Hourly Schedule</h3>
+      <p>Here is your customized hourly schedule for the day:</p>
+      <ul id="hourlySchedule">
+        <!-- Schedule items will be dynamically inserted here -->
+      </ul>
+    </div>
+
+    <button onclick="nextPage()">Proceed to Progress Tracking</button>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

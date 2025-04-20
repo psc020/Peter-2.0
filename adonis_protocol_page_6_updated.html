@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adonis Protocol - Final Overview</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Global Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/page-1.html">Home</a></li>
+        <li><a href="/page-2.html">Personal Plan</a></li>
+        <li><a href="/page-3.html">Progress Tracking</a></li>
+        <li><a href="/page-4.html">Analytics</a></li>
+        <li><a href="/page-5.html">Protocol Planner</a></li>
+        <li><a href="/page-6.html">Final Overview</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Your Final Protocol Overview</h2>
+      <p><strong>Weight Goal:</strong> <span id="weightGoalSummary"></span> kg</p>
+      <p><strong>Body Fat Goal:</strong> <span id="bodyFatGoalSummary"></span>%</p>
+      <p><strong>Timeframe:</strong> <span id="timeframeSummary"></span> months</p>
+      <p><strong>Diet Type:</strong> <span id="dietSummary"></span></p>
+      <p><strong>Exercise Focus:</strong> <span id="exerciseFocusSummary"></span></p>
+
+      <h3>Protocol Phases</h3>
+      <ul id="phasesList">
+        <li><strong>Phase 1:</strong> Reset & Prime</li>
+        <li><strong>Phase 2:</strong> Build & Harden</li>
+        <li><strong>Phase 3:</strong> Sculpt & Optimize</li>
+        <li><strong>Phase 4:</strong> Lock & Maintain</li>
+      </ul>
+
+      <h3>Motivational Feedback</h3>
+      <p id="motivationalFeedback" class="feedback"></p>
+
+      <button onclick="finishSetup()">Finish Setup</button>
+    </div>
+
+    <div class="card">
+      <h2>Next Steps</h2>
+      <p>Continue tracking your progress, or make adjustments to your plan if needed.</p>
+      <button onclick="goToTrackingPage()">Go to Tracking</button>
+      <button onclick="goToPlanPage()">Go Back to Plan</button>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
