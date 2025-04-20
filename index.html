@@ -4,207 +4,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adonis Protocol Engine - Complete System</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; color: #1f2937; }
-    header { background: #0f172a; color: white; padding: 1rem; text-align: center; font-size: 1.4rem; font-weight: bold; }
-    .container { max-width: 960px; margin: auto; padding: 1rem; }
-    .card { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    h2 { margin-top: 0; }
-    label { font-weight: bold; display: block; margin-top: 1rem; }
-    input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-    button { margin-top: 1rem; background: #10b981; color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; font-size: 1rem; cursor: pointer; }
-    canvas { margin-top: 1rem; max-width: 100%; }
-    .tabs { display: flex; gap: 1rem; }
-    .tab { cursor: pointer; padding: 0.6rem 1.2rem; background-color: #e5e7eb; border-radius: 8px; }
-    .active-tab { background-color: #10b981; color: white; }
-  </style>
+  <title>Adonis Protocol - Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>Adonis Protocol Engine - Complete System</header>
-<div class="container">
-  <!-- Date & Phase Info -->
-  <div class="card">
-    <h2>Current Date and Phase</h2>
-    <p id="currentDate"></p>
-    <p id="currentPhase"></p>
+  <!-- Global Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/page-2.html">Personal Plan</a></li>
+        <li><a href="/page-3.html">Progress Tracking</a></li>
+        <li><a href="/page-4.html">Analytics</a></li>
+        <li><a href="/page-5.html">Protocol Planner</a></li>
+        <li><a href="/page-6.html">Final Overview</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Welcome to Your Dashboard</h2>
+      <p>Here's an overview of your current progress and transformation plan.</p>
+      
+      <h3>Current Progress</h3>
+      <p><strong>Weight:</strong> <span id="weightProgress">--</span> kg</p>
+      <p><strong>Body Fat:</strong> <span id="bodyFatProgress">--</span>%</p>
+      <p><strong>Time Remaining:</strong> <span id="timeRemaining">--</span> months</p>
+
+      <h3>Your Current Protocol Phase</h3>
+      <p><strong>Current Phase:</strong> <span id="currentPhase">--</span></p>
+
+      <h3>Motivational Feedback</h3>
+      <p id="motivationalFeedback" class="feedback">You're doing great! Keep going!</p>
+    </div>
+
+    <div class="card">
+      <h3>Quick Access</h3>
+      <ul>
+        <li><button onclick="goToTrackingPage()">Go to Progress Tracking</button></li>
+        <li><button onclick="goToAnalyticsPage()">View Analytics</button></li>
+        <li><button onclick="goToProtocolPlanner()">Edit Protocol</button></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Daily Checklist</h3>
+      <ul>
+        <li><input type="checkbox" id="logProgress"> Log Today's Progress</li>
+        <li><input type="checkbox" id="completeWorkout"> Complete Workout</li>
+        <li><input type="checkbox" id="mealPrep"> Meal Prep</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Settings</h3>
+      <ul>
+        <li><button onclick="goToSettingsPage()">Modify Protocol</button></li>
+        <li><button onclick="resetApp()">Reset All Data</button></li>
+      </ul>
+    </div>
   </div>
 
-  <!-- Tab Navigation -->
-  <div class="tabs">
-    <div class="tab active-tab" onclick="showTab('schedule')">Schedule</div>
-    <div class="tab" onclick="showTab('metrics')">Track Metrics</div>
-    <div class="tab" onclick="showTab('analytics')">Analytics</div>
-  </div>
-
-  <!-- Schedule Tab -->
-  <div id="scheduleTab" class="tab-content">
-    <h2>Daily Schedule</h2>
-    <label for="work">Work Time</label>
-    <input type="time" id="workStart"> - <input type="time" id="workEnd">
-    <label for="meal1">Meal 1 (Time)</label><input type="time" id="meal1Time">
-    <label for="workout">Workout Time</label><input type="time" id="workoutTime">
-    <button onclick="saveSchedule()">Save Schedule</button>
-  </div>
-
-  <!-- Metrics Tab -->
-  <div id="metricsTab" class="tab-content" style="display:none;">
-    <h2>Track Metrics</h2>
-    <label for="weight">Weight (kg)</label><input id="weight" type="number">
-    <label for="bodyFat">Body Fat (%)</label><input id="bodyFat" type="number">
-    <label for="mood">Mood (1-10)</label><input id="mood" type="number">
-    <label for="energy">Energy (1-10)</label><input id="energy" type="number">
-    <label for="sleep">Sleep (hours)</label><input id="sleep" type="number">
-    <button onclick="saveMetrics()">Save Metrics</button>
-  </div>
-
-  <!-- Analytics Tab -->
-  <div id="analyticsTab" class="tab-content" style="display:none;">
-    <h2>Progress Analytics</h2>
-    <canvas id="weightChart"></canvas>
-    <canvas id="bodyFatChart"></canvas>
-  </div>
-
-  <!-- Protocol Creation -->
-  <div class="card">
-    <h2>Create New Protocol</h2>
-    <label>Protocol Name</label><input id="protocolName">
-    <label>Start Date</label><input id="protocolStartDate" type="date">
-    <label>Duration (days)</label><input id="protocolDuration" type="number">
-    <button onclick="createProtocol()">Save Protocol</button>
-  </div>
-
-  <!-- Protocol List -->
-  <div class="card">
-    <h2>Your Saved Protocols</h2>
-    <select id="protocolSelect" onchange="loadProtocolDetails()">
-      <option disabled selected>Select a protocol...</option>
-    </select>
-    <div id="protocolDetails"></div>
-  </div>
-
-</div>
-
-<script>
-let protocols = JSON.parse(localStorage.getItem("adonisProtocols") || "[]");
-let logs = JSON.parse(localStorage.getItem("adonisLogs") || "[]");
-const currentDate = new Date();
-
-function formatDate(date) {
-  return date.toISOString().split("T")[0];
-}
-
-function updateCurrentDateAndPhase() {
-  const dateStr = formatDate(currentDate);
-  document.getElementById("currentDate").textContent = "Current Date: " + dateStr;
-  let currentPhase = "Unknown";
-  const dayNum = Math.floor((currentDate - new Date(localStorage.getItem("adonisStart"))) / (1000 * 60 * 60 * 24));
-  if (dayNum < 14) currentPhase = "Reset & Prime";
-  else if (dayNum < 28) currentPhase = "Build & Harden";
-  else if (dayNum < 42) currentPhase = "Sculpt & Optimize";
-  else currentPhase = "Lock & Maintain";
-  document.getElementById("currentPhase").textContent = "Phase: " + currentPhase;
-}
-
-function showTab(tabName) {
-  const tabs = document.querySelectorAll(".tab-content");
-  tabs.forEach(tab => tab.style.display = "none");
-  const activeTab = document.getElementById(tabName + "Tab");
-  activeTab.style.display = "block";
-
-  const tabButtons = document.querySelectorAll(".tab");
-  tabButtons.forEach(button => button.classList.remove("active-tab"));
-  document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add("active-tab");
-}
-
-function saveSchedule() {
-  const schedule = {
-    workStart: document.getElementById("workStart").value,
-    workEnd: document.getElementById("workEnd").value,
-    meal1Time: document.getElementById("meal1Time").value,
-    workoutTime: document.getElementById("workoutTime").value
-  };
-  localStorage.setItem("adonisSchedule", JSON.stringify(schedule));
-  alert("Schedule saved!");
-}
-
-function saveMetrics() {
-  const metrics = {
-    date: formatDate(currentDate),
-    weight: document.getElementById("weight").value,
-    bodyFat: document.getElementById("bodyFat").value,
-    mood: document.getElementById("mood").value,
-    energy: document.getElementById("energy").value,
-    sleep: document.getElementById("sleep").value
-  };
-  logs.push(metrics);
-  localStorage.setItem("adonisLogs", JSON.stringify(logs));
-  alert("Metrics saved!");
-  renderCharts();
-}
-
-function renderCharts() {
-  const labels = logs.map(log => log.date);
-  const weights = logs.map(log => +log.weight);
-  const bodyFatData = logs.map(log => +log.bodyFat);
-
-  if (window.weightChart) window.weightChart.destroy();
-  if (window.bodyFatChart) window.bodyFatChart.destroy();
-
-  window.weightChart = new Chart(document.getElementById("weightChart"), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{ label: "Weight (kg)", data: weights, borderColor: "blue", fill: false }]
-    }
-  });
-
-  window.bodyFatChart = new Chart(document.getElementById("bodyFatChart"), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{ label: "Body Fat %", data: bodyFatData, borderColor: "red", fill: false }]
-    }
-  });
-}
-
-function createProtocol() {
-  const protocol = {
-    name: document.getElementById("protocolName").value,
-    startDate: document.getElementById("protocolStartDate").value,
-    duration: parseInt(document.getElementById("protocolDuration").value),
-  };
-  protocols.push(protocol);
-  localStorage.setItem("adonisProtocols", JSON.stringify(protocols));
-  alert("Protocol saved!");
-  populateProtocols();
-}
-
-function populateProtocols() {
-  const select = document.getElementById("protocolSelect");
-  select.innerHTML = '<option disabled selected>Select a protocol...</option>';
-  protocols.forEach((p, i) => {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = `${p.name} (${p.startDate})`;
-    select.appendChild(option);
-  });
-}
-
-function loadProtocolDetails() {
-  const idx = document.getElementById("protocolSelect").value;
-  const protocol = protocols[idx];
-  document.getElementById("protocolDetails").innerHTML = `
-    <p><strong>Name:</strong> ${protocol.name}</p>
-    <p><strong>Start Date:</strong> ${protocol.startDate}</p>
-    <p><strong>Duration:</strong> ${protocol.duration} days</p>
-  `;
-}
-
-populateProtocols();
-updateCurrentDateAndPhase();
-showTab('schedule');
-</script>
+  <script src="scripts.js"></script>
 </body>
 </html>
