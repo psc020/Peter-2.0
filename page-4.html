@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adonis Protocol - Analytics Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Global Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/page-1.html">Home</a></li>
+        <li><a href="/page-2.html">Personal Plan</a></li>
+        <li><a href="/page-3.html">Progress Tracking</a></li>
+        <li><a href="/page-4.html">Analytics</a></li>
+        <li><a href="/page-5.html">Protocol Planner</a></li>
+        <li><a href="/page-6.html">Final Overview</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Overall Progress</h2>
+      <p>Track your overall progress towards your weight, body fat, mood, and energy goals.</p>
+      <button onclick="calculateInsights()">Get Insights</button>
+    </div>
+
+    <div class="card">
+      <h2>Progress Analytics</h2>
+      <canvas id="weightChart"></canvas>
+      <canvas id="bodyFatChart"></canvas>
+      <canvas id="moodChart"></canvas>
+      <canvas id="energyChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Adjustments & Insights</h2>
+      <p id="insightsText">Click "Get Insights" to receive personalized suggestions on how to stay on track.</p>
+    </div>
+
+    <button onclick="goBackToTracking()">Back to Tracking</button>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

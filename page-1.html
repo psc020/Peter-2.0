@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adonis Protocol Setup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Global Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/page-1.html">Home</a></li>
+        <li><a href="/page-2.html">Personal Plan</a></li>
+        <li><a href="/page-3.html">Progress Tracking</a></li>
+        <li><a href="/page-4.html">Analytics</a></li>
+        <li><a href="/page-5.html">Protocol Planner</a></li>
+        <li><a href="/page-6.html">Final Overview</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Set Your Goals</h2>
+      <form id="goalForm">
+        <label for="weightGoal">Weight Goal (kg):</label>
+        <input type="number" id="weightGoal" placeholder="e.g., 70" required>
+        
+        <label for="bodyFatGoal">Body Fat Goal (%):</label>
+        <input type="number" id="bodyFatGoal" placeholder="e.g., 10" required>
+        
+        <label for="timeframe">Timeframe (Months):</label>
+        <input type="number" id="timeframe" placeholder="e.g., 3" required>
+        
+        <label for="diet">Diet Preferences:</label>
+        <select id="diet">
+          <option value="Keto">Keto</option>
+          <option value="Low Carb">Low Carb</option>
+          <option value="Moderate Carb">Moderate Carb</option>
+          <option value="Calorie Surplus">Calorie Surplus</option>
+        </select>
+        
+        <label for="exerciseGoal">Exercise Focus:</label>
+        <select id="exerciseGoal">
+          <option value="Strength">Strength Training</option>
+          <option value="Cardio">Cardio</option>
+          <option value="Balanced">Strength + Cardio</option>
+        </select>
+        
+        <label for="dislikedFoods">Any Foods You Dislike? (Optional)</label>
+        <textarea id="dislikedFoods" rows="3" placeholder="List foods you dislike (e.g., avocados, nuts)"></textarea>
+        
+        <button type="button" onclick="saveUserData()">Submit</button>
+        <button type="button" class="reset-btn" onclick="resetSetup()">Reset Setup</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Next Steps</h2>
+      <p>Once you've submitted your goals, we will generate a customized diet and workout plan based on your preferences and timeframe.</p>
+      <button onclick="nextPage()">Proceed to Plan</button>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
